@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-TelegramClient-7773fffb-d97b-48be-8bbc-eb551366afcc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="18.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Telegram.Bot" />
+    <None Remove="Abstract\" />
+    <None Remove="Services\" />
+    <None Remove="Configuration\" />
+    <None Remove="Microsoft.Extensions.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\" />
+    <Folder Include="Services\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+</Project>
