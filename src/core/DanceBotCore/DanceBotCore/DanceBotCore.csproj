@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Akka" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Microsoft.Extensions.Logging" />
+    <None Remove="Akka.Cluster" />
+    <None Remove="Microsoft.Extensions.Hosting" />
+    <None Remove="Akka.DependencyInjection" />
+    <None Remove="Akka.Cluster.Hosting" />
+    <None Remove="Akka.Hosting" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Akka" Version="1.4.49" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Akka.Cluster" Version="1.4.49" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.49" />
+    <PackageReference Include="Akka.Cluster.Hosting" Version="1.0.3" />
+    <PackageReference Include="Akka.Hosting" Version="1.0.3" />
+  </ItemGroup>
+</Project>
