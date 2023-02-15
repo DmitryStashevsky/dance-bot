@@ -1,19 +1,24 @@
 ﻿using System;
+using Akka.Actor;
+using Akka.Configuration;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
+using TelegramClient.Actors;
 
 namespace TelegramClient.Services
 {
     public class UpdateHandler : IUpdateHandler
     {
         private readonly ITelegramBotClient _botClient;
+        private readonly ActorSystem _actorSystem;
         private readonly ILogger<UpdateHandler> _logger;
 
-        public UpdateHandler(ITelegramBotClient botClient, ILogger<UpdateHandler> logger)
+        public UpdateHandler(ITelegramBotClient botClient, ActorSystem actorSystem, ILogger<UpdateHandler> logger)
         {
             _botClient = botClient;
+            _actorSystem = actorSystem;
             _logger = logger;
         }
 
@@ -30,9 +35,11 @@ namespace TelegramClient.Services
             return Task.CompletedTask;
         }
 
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            await botClient.SendTextMessageAsync(update.Message.Chat.Id, "pong");
+            var target = _actorSystem.ActorOf<MessageReceive>();
+            target.Tell(update.Message.Chat.Id);
+            return Task.CompletedTask;
         }
     }
 }

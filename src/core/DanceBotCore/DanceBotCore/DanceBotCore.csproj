@@ -16,15 +16,30 @@
     <None Remove="Akka.DependencyInjection" />
     <None Remove="Akka.Cluster.Hosting" />
     <None Remove="Akka.Hosting" />
+    <None Remove="Actors\" />
+    <None Remove="Akka.Remote" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.49" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-    <PackageReference Include="Akka.Cluster" Version="1.4.49" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Akka.DependencyInjection" Version="1.4.49" />
-    <PackageReference Include="Akka.Cluster.Hosting" Version="1.0.3" />
     <PackageReference Include="Akka.Hosting" Version="1.0.3" />
+    <PackageReference Include="Akka.Remote" Version="1.4.49" />
+  </ItemGroup>
+  <ItemGroup>
+      <ProjectReference Include="../../../shared/DanceBotShared/DanceBotShared/DanceBotShared.csproj">
+        <Private>True</Private>
+        <SpecificVersion>False</SpecificVersion>
+      </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actors\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="dancebotcore.hocon">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

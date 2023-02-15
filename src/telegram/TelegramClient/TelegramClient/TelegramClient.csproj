@@ -11,6 +11,11 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Akka" Version="1.4.49" />
+    <PackageReference Include="Akka.Remote" Version="1.4.49" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.49" />
+    <PackageReference Include="Akka.Hosting" Version="1.0.3" />
+    <PackageReference Include="Akka.Remote.Hosting" Version="1.0.3" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Telegram.Bot" />
@@ -18,10 +23,31 @@
     <None Remove="Services\" />
     <None Remove="Configuration\" />
     <None Remove="Microsoft.Extensions.Http" />
+    <None Remove="Actors\" />
+    <None Remove="Akka" />
+    <None Remove="Akka.Remote" />
+    <None Remove="Akka.Cluster" />
+    <None Remove="Akka.DependencyInjection" />
+    <None Remove="Akka.Hosting" />
+    <None Remove="Akka.Cluster.Hosting" />
+    <None Remove="Akka.Remote.Hosting" />
+    <None Remove="Akka.Cluster.Tools" />
+  </ItemGroup>
+   <ItemGroup>
+      <ProjectReference Include="../../../shared/DanceBotShared/DanceBotShared/DanceBotShared.csproj">
+        <Private>True</Private>
+        <SpecificVersion>False</SpecificVersion>
+      </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />
     <Folder Include="Services\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Actors\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="telegramclient.hocon">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
