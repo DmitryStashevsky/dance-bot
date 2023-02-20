@@ -45,7 +45,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         "
         );
 
-        var actorSystem = ActorSystem.Create("DanceBotTelegram", config);
+        var actorSystem = ActorSystem.Create("DanceBot", config);
 
         services.AddSingleton(actorSystem);
         services.AddScoped<UpdateHandler>();

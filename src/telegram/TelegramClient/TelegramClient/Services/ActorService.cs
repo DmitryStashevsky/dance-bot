@@ -42,8 +42,8 @@ namespace TelegramClient
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            mesageReceive = actorSystem.ActorOf(Props.Create<MessageReceive>(), "MessageReceive");
-            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(serviceProvider.GetService<ITelegramBotClient>()), "SendMessageToUser");
+            mesageReceive = actorSystem.ActorOf(Props.Create<MessageReceive>(), MessageReceive.ActorName);
+            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(serviceProvider.GetService<ITelegramBotClient>()), SendMessageToUser.ActorName);
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();
             });

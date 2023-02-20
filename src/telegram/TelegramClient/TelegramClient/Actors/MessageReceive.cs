@@ -1,19 +1,24 @@
 ﻿using System;
 using Akka.Actor;
 using Akka.Routing;
-using DanceBotShared;
+using DanceBotShared.Bot.Actors;
+using DanceBotShared.Common;
+using DanceBotShared.Core.Actors;
+using DanceBotShared.Core.Messages;
 
 namespace TelegramClient.Actors
 {
-	public class MessageReceive : ReceiveActor
+	public class MessageReceive : BotActor, IActorName
     {
 		public MessageReceive()
 		{
-            Receive<long>(s => {
-                var sendMessage = Context.ActorSelection("akka.tcp://DanceBotCore@localhost:8081/user/MessageTracker");
-                sendMessage.Tell(new ToCore { ChatId = s, Text = "FromTelegram" });
+            Receive<MessageContext>(x => {
+                var sendMessage = Context.ActorSelection(MessageFromBotActor.ActorLocation);
+                sendMessage.Tell(x);
             });
         }
-	}
+
+        public static string ActorName => "MessageReceive";
+    }
 }
 

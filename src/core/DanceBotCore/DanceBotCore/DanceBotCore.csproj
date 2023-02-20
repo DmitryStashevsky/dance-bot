@@ -18,6 +18,7 @@
     <None Remove="Akka.Hosting" />
     <None Remove="Actors\" />
     <None Remove="Akka.Remote" />
+    <None Remove="DanceBotShared" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.49" />
@@ -29,17 +30,11 @@
     <PackageReference Include="Akka.Remote" Version="1.4.49" />
   </ItemGroup>
   <ItemGroup>
-      <ProjectReference Include="../../../shared/DanceBotShared/DanceBotShared/DanceBotShared.csproj">
-        <Private>True</Private>
-        <SpecificVersion>False</SpecificVersion>
-      </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Actors\" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="dancebotcore.hocon">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Reference Include="DanceBotShared">
+      <HintPath>..\..\..\shared\DanceBotShared\DanceBotShared\bin\Debug\net7.0\DanceBotShared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using System;
 using Akka.Actor;
 using Akka.Configuration;
+using DanceBotShared.Common;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -37,8 +38,18 @@ namespace TelegramClient.Services
 
         public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            var chatId = update.Message.Chat.Id;
+            var username = update.Message.From.Username;
+            var message = update.Message.Text;
+            var language = update.Message.From.LanguageCode;
             var target = _actorSystem.ActorOf<MessageReceive>();
-            target.Tell(update.Message.Chat.Id);
+            target.Tell(new MessageContext
+            {
+                ChatId = chatId,
+                UserName = username,
+                Message = message,
+                Language = language
+            });
             return Task.CompletedTask;
         }
     }

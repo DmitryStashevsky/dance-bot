@@ -6,4 +6,24 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Common\" />
+    <None Remove="Bot\" />
+    <None Remove="Core\Messages\" />
+    <None Remove="Core\Actors\" />
+    <None Remove="Akka" />
+    <None Remove="Bot\Actors\" />
+    <None Remove="Bot\Messages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Bot\" />
+    <Folder Include="Core\Messages\" />
+    <Folder Include="Core\Actors\" />
+    <Folder Include="Bot\Actors\" />
+    <Folder Include="Bot\Messages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Akka" Version="1.4.49" />
+  </ItemGroup>
 </Project>

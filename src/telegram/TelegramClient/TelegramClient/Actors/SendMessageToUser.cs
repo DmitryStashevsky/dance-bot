@@ -2,20 +2,24 @@
 using Akka.Actor;
 using Akka.Routing;
 using DanceBotShared;
+using DanceBotShared.Bot.Actors;
+using DanceBotShared.Common;
+using DanceBotShared.Core.Messages;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace TelegramClient.Actors
 {
-	public class SendMessageToUser : ReceiveActor
+	public class SendMessageToUser : SendToUserActor
     {
         private ITelegramBotClient botClient;
+
 		public SendMessageToUser(ITelegramBotClient botClient)
 		{
             this.botClient = botClient;
 
-            Receive<SendToUser>(s => {
-                botClient.SendTextMessageAsync(s.ChatId, s.Text);
+            Receive<MessageFromBot>(s => {
+                botClient.SendTextMessageAsync(s.ChatId, s.ResultMessage);
             });
         }
 

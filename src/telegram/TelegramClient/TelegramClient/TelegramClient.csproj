@@ -32,12 +32,7 @@
     <None Remove="Akka.Cluster.Hosting" />
     <None Remove="Akka.Remote.Hosting" />
     <None Remove="Akka.Cluster.Tools" />
-  </ItemGroup>
-   <ItemGroup>
-      <ProjectReference Include="../../../shared/DanceBotShared/DanceBotShared/DanceBotShared.csproj">
-        <Private>True</Private>
-        <SpecificVersion>False</SpecificVersion>
-      </ProjectReference>
+    <None Remove="DanceBotShared" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\" />
@@ -46,8 +41,8 @@
     <Folder Include="Actors\" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="telegramclient.hocon">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Reference Include="DanceBotShared">
+      <HintPath>..\..\..\shared\DanceBotShared\DanceBotShared\bin\Debug\net7.0\DanceBotShared.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

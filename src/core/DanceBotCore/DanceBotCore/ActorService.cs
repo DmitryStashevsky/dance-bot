@@ -3,6 +3,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
 using DanceBotCore.Actors;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 namespace DanceBotCore
@@ -43,10 +44,9 @@ namespace DanceBotCore
 
             var diSetup = DependencyResolverSetup.Create(serviceProvider);
             var actorSystemSetup = bootstrap.And(diSetup);
+            actorSystem = ActorSystem.Create("DanceBot", actorSystemSetup);
 
-            actorSystem = ActorSystem.Create("DanceBotCore", actorSystemSetup);
-
-            messageTracker = actorSystem.ActorOf(Props.Create<MessageTracker>(), "MessageTracker");
+            messageTracker = actorSystem.ActorOf(Props.Create<InitialMessageFromBot>(), InitialMessageFromBot.ActorName);
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();
