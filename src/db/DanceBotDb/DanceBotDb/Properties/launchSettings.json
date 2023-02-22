@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DanceBotDb": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -14,6 +14,14 @@
     <None Remove="Akka" />
     <None Remove="Bot\Actors\" />
     <None Remove="Bot\Messages\" />
+    <None Remove="Db\" />
+    <None Remove="Db\Actors\" />
+    <None Remove="Db\Messages\" />
+    <None Remove="Db\Messages\Commands\" />
+    <None Remove="Db\Messages\Queries\" />
+    <None Remove="Db\Messages\Results\" />
+    <None Remove="Db\Messages\Models\" />
+    <None Remove="MongoDB.Driver" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
@@ -22,6 +30,14 @@
     <Folder Include="Core\Actors\" />
     <Folder Include="Bot\Actors\" />
     <Folder Include="Bot\Messages\" />
+    <Folder Include="Db\" />
+    <Folder Include="Db\Actors\" />
+    <Folder Include="Db\Messages\" />
+    <Folder Include="Db\Messages\Commands\" />
+    <Folder Include="Db\Messages\Commands\" />
+    <Folder Include="Db\Messages\Queries\" />
+    <Folder Include="Db\Messages\Results\" />
+    <Folder Include="Db\Messages\Models\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.49" />

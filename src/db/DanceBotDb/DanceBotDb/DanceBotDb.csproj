@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-DanceBotDb-2c1fffed-94b0-42f7-9b1c-d52e2af6066e</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Akka" Version="1.4.49" />
+    <PackageReference Include="Akka.Remote" Version="1.4.49" />
+    <PackageReference Include="Akka.DependencyInjection" Version="1.4.49" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Akka" />
+    <None Remove="Akka.Remote" />
+    <None Remove="Akka.DependencyInjection" />
+    <None Remove="Actors\" />
+    <None Remove="MongoDB.Driver" />
+    <None Remove="DanceBotShared" />
+    <None Remove="Common\" />
+    <None Remove="Configuration\" />
+    <None Remove="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actors\" />
+    <Folder Include="Common\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DanceBotShared">
+      <HintPath>..\..\..\shared\DanceBotShared\DanceBotShared\bin\Debug\net7.0\DanceBotShared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

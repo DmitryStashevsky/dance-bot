@@ -2,22 +2,21 @@
 using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
+using DanceBotDb.Actors;
+using DanceBotDb.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Win32;
-using Telegram.Bot;
-using TelegramClient.Actors;
 
-namespace TelegramClient
+namespace DanceBotDb
 {
     public class ActorService : IHostedService
     {
         private readonly ActorSystem actorSystem;
         private readonly IServiceProvider serviceProvider;
         private readonly IHostApplicationLifetime applicationLifetime;
-
-        private IActorRef mesageReceive;
-        private IActorRef sendMessageToUser;
+        private IActorRef query;
+        private IActorRef command;
 
         public ActorService(ActorSystem actorSystem, IServiceProvider serviceProvider, IHostApplicationLifetime applicationLifetime)
         {
@@ -28,8 +27,10 @@ namespace TelegramClient
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            mesageReceive = actorSystem.ActorOf(Props.Create<MessageReceive>(), MessageReceive.ActorName);
-            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(serviceProvider.GetService<ITelegramBotClient>()), SendMessageToUser.ActorName);
+            var dbContext = serviceProvider.GetService<IDbContext>();
+
+            query = actorSystem.ActorOf(QueryActor.Props(dbContext), QueryActor.ActorName);
+            command = actorSystem.ActorOf(CommandActor.Props(dbContext), CommandActor.ActorName);
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();
