@@ -25,11 +25,15 @@
     <None Remove="Common\" />
     <None Remove="Configuration\" />
     <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Actors\Commands\" />
+    <None Remove="Actors\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Actors\" />
     <Folder Include="Common\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Actors\Commands\" />
+    <Folder Include="Actors\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DanceBotShared">

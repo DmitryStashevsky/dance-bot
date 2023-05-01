@@ -5,8 +5,7 @@ namespace DanceBotShared.Db.Messages.Models
 	{
 		public string Place { get; set; }
 		public DateTime Time { get; set; }
-
-		public static string Type => nameof(PrivateLessonSlot);
+		public SlotStatus Status { get; set; }
     }
 }
 

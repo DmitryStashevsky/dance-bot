@@ -19,14 +19,14 @@ namespace DanceBotCore.Actors
             Receive<MessageContext>(x =>
             {
                 var addPrivateLessonSlot = Context.ActorSelection(ExecuteCommandActor.ActorLocation);
-                addPrivateLessonSlot.Tell(new AddPrivateLessonSlotCommand(x, "D43", DateTime.Now));
+                addPrivateLessonSlot.Tell(new AddPrivateLessonSlotCommand(x, Self, "D43", DateTime.Now));
 
             });
 
             Receive<CommandResult<PrivateLessonSlot>>(x =>
             {
                 var getPrivateLessonSlot = Context.ActorSelection(ExecuteQueryActor.ActorLocation);
-                getPrivateLessonSlot.Tell(new GetPrivateLessonSlotQuery(x.Context, x.Data.Id));
+                getPrivateLessonSlot.Tell(new GetPrivateLessonSlotQuery(x.Context, Self, x.Data.Id));
             });
 
             Receive<QueryResult<PrivateLessonSlot>>(x =>

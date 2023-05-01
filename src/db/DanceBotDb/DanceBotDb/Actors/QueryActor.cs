@@ -10,28 +10,18 @@ namespace DanceBotDb.Actors
 {
 	public class QueryActor : ExecuteQueryActor
     {
-		private readonly IDbContext dbContext;
-		private IActorRef actorRef;
-
-		public QueryActor(IDbContext dbContext)
+		public QueryActor()
 		{
-			ReceiveAsync<GetPrivateLessonsSlotsQuery>(async x =>
-			{
-				var result = await dbContext.GetAll<PrivateLessonSlot>();
-                Context.Sender.Tell(new QueryResult<IList<PrivateLessonSlot>>(x.Context, result));
-
-            });
-
-            ReceiveAsync<GetPrivateLessonSlotQuery>(async x =>
+            ReceiveAsync<Query>(async x =>
             {
-                var result = await dbContext.GetById<PrivateLessonSlot>(x.Id);
-                Context.Sender.Tell(new QueryResult<PrivateLessonSlot>(x.Context, result));
+                var command = Context.ActorSelection($"/user/{x.GetType().Name}Actor");
+                command.Tell(x);
             });
         }
 
-        public static Props Props(IDbContext dbContext)
+        public static Props Props()
         {
-            return Akka.Actor.Props.Create(() => new QueryActor(dbContext));
+            return Akka.Actor.Props.Create(() => new QueryActor());
         }
     }
 }

@@ -3,6 +3,8 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
 using DanceBotDb.Actors;
+using DanceBotDb.Actors.Commands;
+using DanceBotDb.Actors.Queries;
 using DanceBotDb.Common;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,8 +17,14 @@ namespace DanceBotDb
         private readonly ActorSystem actorSystem;
         private readonly IServiceProvider serviceProvider;
         private readonly IHostApplicationLifetime applicationLifetime;
+
         private IActorRef query;
+        private IActorRef getPrivateLessonsSlotsQueryActor;
+        private IActorRef getPrivateLessonsSlotQueryActor;
+
         private IActorRef command;
+        private IActorRef addPrivateLessonCommand;
+        private IActorRef participatePrivateLessonCommand;
 
         public ActorService(ActorSystem actorSystem, IServiceProvider serviceProvider, IHostApplicationLifetime applicationLifetime)
         {
@@ -29,8 +37,15 @@ namespace DanceBotDb
         {
             var dbContext = serviceProvider.GetService<IDbContext>();
 
-            query = actorSystem.ActorOf(QueryActor.Props(dbContext), QueryActor.ActorName);
-            command = actorSystem.ActorOf(CommandActor.Props(dbContext), CommandActor.ActorName);
+            query = actorSystem.ActorOf(QueryActor.Props(), QueryActor.ActorName);
+            command = actorSystem.ActorOf(CommandActor.Props(), CommandActor.ActorName);
+
+            getPrivateLessonsSlotsQueryActor = actorSystem.ActorOf(GetPrivateLessonsSlotsQueryActor.Props(dbContext), nameof(GetPrivateLessonsSlotsQueryActor));
+            getPrivateLessonsSlotQueryActor = actorSystem.ActorOf(GetPrivateLessonsSlotQueryActor.Props(dbContext), nameof(GetPrivateLessonsSlotQueryActor));
+
+
+            addPrivateLessonCommand = actorSystem.ActorOf(AddPrivateLessonSlotCommandActor.Props(dbContext), nameof(AddPrivateLessonSlotCommandActor));
+            participatePrivateLessonCommand = actorSystem.ActorOf(ParticipatePrivateLessonCommandActor.Props(dbContext), nameof(ParticipatePrivateLessonCommandActor));
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();

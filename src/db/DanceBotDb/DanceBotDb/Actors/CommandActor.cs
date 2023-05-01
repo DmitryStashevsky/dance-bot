@@ -1,5 +1,6 @@
 ﻿using System;
 using Akka.Actor;
+using DanceBotDb.Actors.Commands;
 using DanceBotDb.Common;
 using DanceBotShared.Db.Actors;
 using DanceBotShared.Db.Messages.Commands;
@@ -11,20 +12,18 @@ namespace DanceBotDb.Actors
 {
 	public class CommandActor : ExecuteCommandActor
 	{
-        private readonly IDbContext dbContext;
-
-        public CommandActor(IDbContext dbContext)
+        public CommandActor()
         {
-            ReceiveAsync<AddPrivateLessonSlotCommand>(async x =>
+            ReceiveAsync<Command>(async x =>
             {
-                var result = await dbContext.Add<PrivateLessonSlot>(new PrivateLessonSlot { Place = x.Place, Time = x.Time});
-                Context.Sender.Tell(new CommandResult<PrivateLessonSlot>(ResultStatus.Success, x.Context, result));
+                var command = Context.ActorSelection($"/user/{x.GetType().Name}Actor");
+                command.Tell(x);
             });
         }
 
-        public static Props Props(IDbContext dbContext)
+        public static Props Props()
         {
-            return Akka.Actor.Props.Create(() => new CommandActor(dbContext));
+            return Akka.Actor.Props.Create(() => new CommandActor());
         }
     }
 }

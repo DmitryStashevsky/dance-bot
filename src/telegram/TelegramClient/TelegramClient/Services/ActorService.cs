@@ -4,7 +4,6 @@ using Akka.Configuration;
 using Akka.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Win32;
 using Telegram.Bot;
 using TelegramClient.Actors;
 

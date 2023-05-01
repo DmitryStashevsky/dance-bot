@@ -45,6 +45,15 @@ namespace DanceBotDb.Common
             await collection.InsertOneAsync(entity);
             return entity;
         }
+
+        public async Task<T> Replace<T>(string id, T entity) where T : Document
+        {
+            var collection = db.GetCollection<T>(typeof(T).Name);
+            var objectId = new ObjectId(id);
+            var filter = Builders<T>.Filter.Eq(x => x.Id, id);
+            await collection.ReplaceOneAsync(filter, entity);
+            return entity;
+        }
     }
 }
 

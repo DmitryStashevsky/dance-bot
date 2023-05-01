@@ -1,4 +1,5 @@
 ﻿using System;
+using Akka.Actor;
 using DanceBotShared.Common;
 using DanceBotShared.Db.Messages.Models;
 
@@ -9,8 +10,8 @@ namespace DanceBotShared.Db.Messages.Commands
 		public string Place { get; }
 		public DateTime Time { get; }
 
-		public AddPrivateLessonSlotCommand(MessageContext context, string place, DateTime time)
-			: base(context)
+		public AddPrivateLessonSlotCommand(MessageContext context, IActorRef actorRef, string place, DateTime time)
+			: base(context, actorRef)
 		{
 			Place = place;
 			Time = time;

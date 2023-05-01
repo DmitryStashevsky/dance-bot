@@ -23,9 +23,9 @@ namespace TelegramClient.Actors
             });
         }
 
-        public static Props Props(ITelegramBotClient botCleint)
+        public static Props Props(ITelegramBotClient botClient)
         {
-            return Akka.Actor.Props.Create(() => new SendMessageToUser(botCleint));
+            return Akka.Actor.Props.Create(() => new SendMessageToUser(botClient));
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 namespace DanceBotShared.Db.Messages.Models
 {
-	public interface IDocumentType
+	public enum Status
 	{
-		public static string Type { get; }
+		Pending,
+		Approved,
+		Rejected
 	}
 }
 
