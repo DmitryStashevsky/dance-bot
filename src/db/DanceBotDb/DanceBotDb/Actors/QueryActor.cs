@@ -14,8 +14,8 @@ namespace DanceBotDb.Actors
 		{
             ReceiveAsync<Query>(async x =>
             {
-                var command = Context.ActorSelection($"/user/{x.GetType().Name}Actor");
-                command.Tell(x);
+                var query = Context.ActorSelection($"/user/{x.GetType().Name}Actor");
+                query.Tell(x);
             });
         }
 

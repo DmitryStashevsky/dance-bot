@@ -41,7 +41,7 @@ namespace DanceBotDb
             command = actorSystem.ActorOf(CommandActor.Props(), CommandActor.ActorName);
 
             getPrivateLessonsSlotsQueryActor = actorSystem.ActorOf(GetPrivateLessonsSlotsQueryActor.Props(dbContext), nameof(GetPrivateLessonsSlotsQueryActor));
-            getPrivateLessonsSlotQueryActor = actorSystem.ActorOf(GetPrivateLessonsSlotQueryActor.Props(dbContext), nameof(GetPrivateLessonsSlotQueryActor));
+            getPrivateLessonsSlotQueryActor = actorSystem.ActorOf(GetPrivateLessonSlotQueryActor.Props(dbContext), nameof(GetPrivateLessonSlotQueryActor));
 
 
             addPrivateLessonCommand = actorSystem.ActorOf(AddPrivateLessonSlotCommandActor.Props(dbContext), nameof(AddPrivateLessonSlotCommandActor));

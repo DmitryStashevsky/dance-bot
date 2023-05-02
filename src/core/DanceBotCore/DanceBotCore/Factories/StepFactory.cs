@@ -1,5 +1,6 @@
 ﻿using System;
 using Akka.Actor;
+using DanceBotCore.Actors.Steps;
 using DanceBotShared.Common;
 
 namespace DanceBotCore.Factories
@@ -13,6 +14,10 @@ namespace DanceBotCore.Factories
     {
         public ActorSelection GetStepHandler(IUntypedActorContext actorContext, BusinessContext businessContext)
         {
+            if (string.IsNullOrEmpty(businessContext.Step))
+            {
+                return actorContext.ActorSelection($"/user/{nameof(InitialStepActor)}");
+            }
             return actorContext.ActorSelection($"/user/{businessContext.Step}");
         }
     }

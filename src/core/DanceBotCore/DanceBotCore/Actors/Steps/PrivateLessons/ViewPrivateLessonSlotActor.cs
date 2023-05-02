@@ -26,11 +26,18 @@ namespace DanceBotCore.Actors.Steps.PrivateLessons
 
             Receive<QueryResult<PrivateLessonSlot>>(x =>
             {
-                var message = new MessageFromBot<PrivateLessonSlot>
+                var message = new MessageFromBot
                 {
+                    Text = $"{x.Data.Place}",
                     MessageContext = x.Context,
-                    ResultMessage = x.Data,
-                    Actions = new List<BotAction>()
+                    Actions = new List<BotAction>
+                    {
+                        new BotAction
+                        {
+                            Text = "Join",
+                            Step = "N/A"
+                        }
+                    }
                 };
                 SendMessageToUser(message);
             });

@@ -32,7 +32,7 @@ namespace TelegramClient
             var businessContextHandler = serviceProvider.GetService<IBusinessContextHandler>();
 
             mesageReceive = actorSystem.ActorOf(MessageReceive.Props(businessContextHandler), MessageReceive.ActorName);
-            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(client), SendMessageToUser.ActorName);
+            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(client, businessContextHandler), SendMessageToUser.ActorName);
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();

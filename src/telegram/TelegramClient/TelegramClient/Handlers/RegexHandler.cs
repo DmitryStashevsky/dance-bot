@@ -8,7 +8,7 @@ namespace TelegramClient.Handlers
 	public interface IRegexHandler
 	{
 		BusinessContext GetContextFromMessage(string message);
-		string CreateMessageFromContext(BusinessContext context);
+		string GetMessageFromContext(BusinessContext context);
     }
 
     internal class RegexHandler : IRegexHandler
@@ -17,9 +17,9 @@ namespace TelegramClient.Handlers
 		private const string IdSeparator = "#";
 		private const string TypeSeparator = "$";
 
-        private const string Regex = "(?<=\\{0}).+?(?=\\${0})";
+        private const string Regex = "(?<=\\{0}).+?(?=\\{0})";
 
-        public string CreateMessageFromContext(BusinessContext context)
+        public string GetMessageFromContext(BusinessContext context)
         {
             var sb = new StringBuilder();
 
@@ -38,9 +38,13 @@ namespace TelegramClient.Handlers
             var stepRegex = new Regex(string.Format(Regex, StepSeparator));
             var step = stepRegex.Match(message);
 
+            var entityIdRegex = new Regex(string.Format(Regex, IdSeparator));
+            var entityId = entityIdRegex.Match(message);
+
             return new BusinessContext
             {
-                Step = step.Success ? step.Value : null
+                Step = step.Success ? step.Value : null,
+                EntityId = entityId.Success ? entityId.Value : null
             };
         }
     }

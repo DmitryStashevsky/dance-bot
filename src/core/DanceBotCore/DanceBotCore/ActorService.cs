@@ -3,6 +3,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
 using DanceBotCore.Actors;
+using DanceBotCore.Actors.Steps;
 using DanceBotCore.Actors.Steps.PrivateLessons;
 using DanceBotCore.Factories;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,8 @@ namespace DanceBotCore
         private readonly IHostApplicationLifetime applicationLifetime;
 
         private IActorRef messageTracker;
+        private IActorRef initialStepActor;
+
         private IActorRef listPrivateLessonsSlots;
         private IActorRef viewPrivateLessonSlot;
 
@@ -33,6 +36,8 @@ namespace DanceBotCore
             var stepFactory = serviceProvider.GetService<IStepFactory>();
 
             messageTracker = actorSystem.ActorOf(InitialMessageFromBotActor.Props(stepFactory), InitialMessageFromBotActor.ActorName);
+
+            initialStepActor = actorSystem.ActorOf(InitialStepActor.Props(), nameof(InitialStepActor));
 
             listPrivateLessonsSlots = actorSystem.ActorOf(ListPrivateLessonsSlotsActor.Props(), nameof(ListPrivateLessonsSlotsActor));
             viewPrivateLessonSlot = actorSystem.ActorOf(ViewPrivateLessonSlotActor.Props(), nameof(ViewPrivateLessonSlotActor));

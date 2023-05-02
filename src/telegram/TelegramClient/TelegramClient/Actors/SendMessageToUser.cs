@@ -9,30 +9,25 @@ using DanceBotShared.Core.Messages;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using TelegramClient.Handlers;
 
 namespace TelegramClient.Actors
 {
 	public class SendMessageToUser : SendToUserActor
     {
-		public SendMessageToUser(ITelegramBotClient botClient)
+		public SendMessageToUser(ITelegramBotClient botClient, IBusinessContextHandler businessContextHandler)
 		{
             Receive<MessageFromBot>(s =>
             {
-                var inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
+                var buttons = s.Actions.Select(x =>
+                {
+                    return new[]
                     {
-                        // first row
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                        },
-                        // second row
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                        }
-                    }
-                );
+                        InlineKeyboardButton.WithCallbackData(x.Text, businessContextHandler.GetString(x))
+                    };
+                });
+
+                var inlineKeyboard = new InlineKeyboardMarkup(buttons);
 
                 if (s.MessageContext.CallbackId.HasValue)
                 {
@@ -40,21 +35,21 @@ namespace TelegramClient.Actors
                         chatId: s.MessageContext.ChatId,
                         messageId: s.MessageContext.CallbackId.Value,
                         replyMarkup: inlineKeyboard,
-                        text: "Received");
+                        text: s.Text);
                 }
                 else
                 {
                     botClient.SendTextMessageAsync(
                         chatId: s.MessageContext.ChatId,
                         replyMarkup: inlineKeyboard,
-                        text: "Received");
+                        text: s.Text);
                 }
             });
         }
 
-        public static Props Props(ITelegramBotClient botClient)
+        public static Props Props(ITelegramBotClient botClient, IBusinessContextHandler businessContextHandler)
         {
-            return Akka.Actor.Props.Create(() => new SendMessageToUser(botClient));
+            return Akka.Actor.Props.Create(() => new SendMessageToUser(botClient, businessContextHandler));
         }
     }
 }

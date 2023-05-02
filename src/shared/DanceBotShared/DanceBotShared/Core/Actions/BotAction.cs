@@ -1,9 +1,11 @@
 ﻿using System;
+using DanceBotShared.Common;
+
 namespace DanceBotShared.Core.Actions
 {
-	public record class BotAction
+	public record class BotAction : BusinessContext
 	{
-		public string Step { get; init; }
+		public string Text { get; init; }
 	}
 }
 

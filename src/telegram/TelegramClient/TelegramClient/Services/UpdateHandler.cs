@@ -75,8 +75,8 @@ namespace TelegramClient.Services
             {
                 ChatId = callbackQuery.Message.Chat.Id,
                 CallbackId = callbackQuery.Message.MessageId,
-                UserName = callbackQuery.Message.From.Username,
-                Message = callbackQuery.Message.Text,
+                UserName = callbackQuery.From.Username,
+                Message = callbackQuery.Data,
                 Language = callbackQuery.Message.From.LanguageCode
             });
 

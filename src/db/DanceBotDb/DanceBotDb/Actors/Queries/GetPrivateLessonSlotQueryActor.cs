@@ -9,9 +9,9 @@ using DanceBotShared.Db.Messages.Results;
 
 namespace DanceBotDb.Actors.Queries
 {
-	public class GetPrivateLessonsSlotQueryActor : DbActor
+	public class GetPrivateLessonSlotQueryActor : DbActor
 	{
-		public GetPrivateLessonsSlotQueryActor(IDbContext dbContext)
+		public GetPrivateLessonSlotQueryActor(IDbContext dbContext)
 		{
             ReceiveAsync<GetPrivateLessonSlotQuery>(async x =>
             {
@@ -22,7 +22,7 @@ namespace DanceBotDb.Actors.Queries
 
         public static Props Props(IDbContext dbContext)
         {
-            return Akka.Actor.Props.Create(() => new GetPrivateLessonsSlotQueryActor(dbContext));
+            return Akka.Actor.Props.Create(() => new GetPrivateLessonSlotQueryActor(dbContext));
         }
     }
 }

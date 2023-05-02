@@ -26,11 +26,16 @@ namespace DanceBotCore.Actors.Steps.PrivateLessons
 
             Receive<QueryResult<IList<PrivateLessonSlot>>>(x =>
             {
-                var message = new MessageFromBot<IList<PrivateLessonSlot>>
+                var message = new MessageFromBot
                 {
+                    Text = "List of private classes slots:",
                     MessageContext = x.Context,
-                    ResultMessage = x.Data,
-                    Actions = new List<BotAction> { new ViewAction { Step = nameof (ViewPrivateLessonSlotActor)} }
+                    Actions = x.Data.Select(y => new BotAction
+                    {
+                        Text = $"Place: {y.Place}, Time: {y.Time}",
+                        Step = nameof (ViewPrivateLessonSlotActor),
+                        EntityId = y.Id
+                    }).ToList()
                 };
                 SendMessageToUser(message);
             });

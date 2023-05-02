@@ -4,15 +4,11 @@ using DanceBotShared.Core.Actions;
 
 namespace DanceBotShared.Core.Messages
 {
-	public abstract record class MessageFromBot
+	public record class MessageFromBot
 	{
+		public string Text { get; init; }
 		public MessageContext MessageContext { get; init; }
         public IList<BotAction> Actions { get; init; }
 	}
-
-    public record class MessageFromBot<T> : MessageFromBot
-    {
-        public T ResultMessage { get; init; }
-    }
 }
 
