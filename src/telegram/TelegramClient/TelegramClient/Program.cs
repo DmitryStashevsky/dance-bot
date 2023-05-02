@@ -14,6 +14,7 @@ using Akka.Configuration;
 using TelegramClient;
 using System;
 using Akka.Actor.Setup;
+using TelegramClient.Handlers;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
@@ -48,6 +49,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         var actorSystem = ActorSystem.Create("DanceBot", config);
 
         services.AddSingleton(actorSystem);
+        services.AddSingleton<IRegexHandler, RegexHandler>();
+        services.AddSingleton<IBusinessContextHandler, BusinessContextHandler>();
         services.AddScoped<UpdateHandler>();
         services.AddScoped<ReceiverService>();
         services.AddHostedService<PollingService>();

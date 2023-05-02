@@ -6,7 +6,10 @@ using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 using TelegramClient.Actors;
+using TelegramClient.Handlers;
 
 namespace TelegramClient.Services
 {
@@ -16,7 +19,10 @@ namespace TelegramClient.Services
         private readonly ActorSystem _actorSystem;
         private readonly ILogger<UpdateHandler> _logger;
 
-        public UpdateHandler(ITelegramBotClient botClient, ActorSystem actorSystem, ILogger<UpdateHandler> logger)
+        public UpdateHandler(
+            ITelegramBotClient botClient,
+            ActorSystem actorSystem,
+            ILogger<UpdateHandler> logger)
         {
             _botClient = botClient;
             _actorSystem = actorSystem;
@@ -38,18 +44,42 @@ namespace TelegramClient.Services
 
         public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var chatId = update.Message.Chat.Id;
-            var username = update.Message.From.Username;
-            var message = update.Message.Text;
-            var language = update.Message.From.LanguageCode;
-            var target = _actorSystem.ActorOf<MessageReceive>();
+            var handler = update switch
+            {
+                { Message: { } message } => BotOnMessageReceived(message),
+                { CallbackQuery: { } callbackQuery } => BotOnCallbackQueryReceived(callbackQuery)
+            };
+
+            return Task.CompletedTask;
+        }
+
+        //TODO remove task
+        private Task BotOnMessageReceived(Message message)
+        {
+            var target = _actorSystem.ActorSelection($"/user/{MessageReceive.ActorName}");
             target.Tell(new MessageContext
             {
-                ChatId = chatId,
-                UserName = username,
-                Message = message,
-                Language = language
+                ChatId = message.Chat.Id,
+                UserName = message.From.Username,
+                Message = message.Text,
+                Language = message.From.LanguageCode
             });
+
+            return Task.CompletedTask;
+        }
+
+        private Task BotOnCallbackQueryReceived(CallbackQuery callbackQuery)
+        {
+            var target = _actorSystem.ActorSelection($"/user/{MessageReceive.ActorName}");
+            target.Tell(new MessageContext
+            {
+                ChatId = callbackQuery.Message.Chat.Id,
+                CallbackId = callbackQuery.Message.MessageId,
+                UserName = callbackQuery.Message.From.Username,
+                Message = callbackQuery.Message.Text,
+                Language = callbackQuery.Message.From.LanguageCode
+            });
+
             return Task.CompletedTask;
         }
     }

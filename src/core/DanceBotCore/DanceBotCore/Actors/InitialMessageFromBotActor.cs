@@ -9,38 +9,24 @@ using DanceBotShared.Db.Messages.Commands;
 using DanceBotShared.Db.Messages.Models;
 using DanceBotShared.Db.Messages.Results;
 using DanceBotShared.Db.Messages.Queries;
+using DanceBotCore.Factories;
 
 namespace DanceBotCore.Actors
 {
 	public class InitialMessageFromBotActor : MessageFromBotActor
     {
-        public InitialMessageFromBotActor()
+        public InitialMessageFromBotActor(IStepFactory stepFactory)
 		{
-            Receive<MessageContext>(x =>
+            Receive<TelegramContext>(x =>
             {
-                var addPrivateLessonSlot = Context.ActorSelection(ExecuteCommandActor.ActorLocation);
-                addPrivateLessonSlot.Tell(new AddPrivateLessonSlotCommand(x, Self, "D43", DateTime.Now));
-
+                var step = stepFactory.GetStepHandler(Context, x.BusinessContext);
+                step.Tell(x);
             });
+        }
 
-            Receive<CommandResult<PrivateLessonSlot>>(x =>
-            {
-                var getPrivateLessonSlot = Context.ActorSelection(ExecuteQueryActor.ActorLocation);
-                getPrivateLessonSlot.Tell(new GetPrivateLessonSlotQuery(x.Context, Self, x.Data.Id));
-            });
-
-            Receive<QueryResult<PrivateLessonSlot>>(x =>
-            {
-                var sendMessage = Context.ActorSelection(SendToUserActor.ActorLocation);
-                sendMessage.Tell(new MessageFromBot
-                {
-                    ChatId = x.Context.ChatId,
-                    UserName = x.Context.UserName,
-                    Message = x.Context.Message,
-                    Language = x.Context.Language,
-                    ResultMessage = $"Id: {x.Data.Id}; Place: {x.Data.Place}; Time: {x.Data.Time}"
-                });
-            });
+        public static Props Props(IStepFactory stepFactory)
+        {
+            return Akka.Actor.Props.Create(() => new InitialMessageFromBotActor(stepFactory));
         }
     }
 }

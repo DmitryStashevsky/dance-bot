@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Telegram.Bot;
 using TelegramClient.Actors;
+using TelegramClient.Handlers;
 
 namespace TelegramClient
 {
@@ -27,8 +28,11 @@ namespace TelegramClient
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            mesageReceive = actorSystem.ActorOf(Props.Create<MessageReceive>(), MessageReceive.ActorName);
-            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(serviceProvider.GetService<ITelegramBotClient>()), SendMessageToUser.ActorName);
+            var client = serviceProvider.GetService<ITelegramBotClient>();
+            var businessContextHandler = serviceProvider.GetService<IBusinessContextHandler>();
+
+            mesageReceive = actorSystem.ActorOf(MessageReceive.Props(businessContextHandler), MessageReceive.ActorName);
+            sendMessageToUser = actorSystem.ActorOf(SendMessageToUser.Props(client), SendMessageToUser.ActorName);
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();

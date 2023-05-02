@@ -22,6 +22,7 @@
     <None Remove="Db\Messages\Results\" />
     <None Remove="Db\Messages\Models\" />
     <None Remove="MongoDB.Driver" />
+    <None Remove="Core\Actions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
@@ -38,6 +39,7 @@
     <Folder Include="Db\Messages\Queries\" />
     <Folder Include="Db\Messages\Results\" />
     <Folder Include="Db\Messages\Models\" />
+    <Folder Include="Core\Actions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.49" />

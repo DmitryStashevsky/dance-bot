@@ -19,6 +19,9 @@
     <None Remove="Actors\" />
     <None Remove="Akka.Remote" />
     <None Remove="DanceBotShared" />
+    <None Remove="Factories\" />
+    <None Remove="Actors\Steps\" />
+    <None Remove="Actors\Steps\PrivateLessons\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.49" />
@@ -31,6 +34,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Actors\" />
+    <Folder Include="Factories\" />
+    <Folder Include="Actors\Steps\" />
+    <Folder Include="Actors\Steps\PrivateLessons\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DanceBotShared">

@@ -1,11 +1,18 @@
 ﻿using System;
 using DanceBotShared.Common;
+using DanceBotShared.Core.Actions;
 
 namespace DanceBotShared.Core.Messages
 {
-	public record class MessageFromBot : MessageContext
+	public abstract record class MessageFromBot
 	{
-        public string ResultMessage { get; init; }
+		public MessageContext MessageContext { get; init; }
+        public IList<BotAction> Actions { get; init; }
 	}
+
+    public record class MessageFromBot<T> : MessageFromBot
+    {
+        public T ResultMessage { get; init; }
+    }
 }
 

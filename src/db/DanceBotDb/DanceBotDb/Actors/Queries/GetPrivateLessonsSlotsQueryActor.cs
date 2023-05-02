@@ -17,7 +17,6 @@ namespace DanceBotDb.Actors.Queries
             {
                 var result = await dbContext.GetAll<PrivateLessonSlot>();
                 x.ActorRef.Tell(new QueryResult<IList<PrivateLessonSlot>>(x.Context, result));
-
             });
         }
 

@@ -19,8 +19,8 @@ namespace DanceBotShared.Db.Messages.Commands
             ActorRef = actorRef;
         }
 
-        public MessageContext Context;
-        public IActorRef ActorRef;
+        public MessageContext Context { get; }
+        public IActorRef ActorRef { get; }
     }
 }
 

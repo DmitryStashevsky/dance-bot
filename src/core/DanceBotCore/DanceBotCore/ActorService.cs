@@ -3,6 +3,8 @@ using Akka.Actor;
 using Akka.Configuration;
 using Akka.DependencyInjection;
 using DanceBotCore.Actors;
+using DanceBotCore.Actors.Steps.PrivateLessons;
+using DanceBotCore.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -11,10 +13,13 @@ namespace DanceBotCore
 {
 	public class ActorService : IHostedService
     {
-        private ActorSystem actorSystem;
+        private readonly ActorSystem actorSystem;
         private readonly IServiceProvider serviceProvider;
         private readonly IHostApplicationLifetime applicationLifetime;
+
         private IActorRef messageTracker;
+        private IActorRef listPrivateLessonsSlots;
+        private IActorRef viewPrivateLessonSlot;
 
         public ActorService(ActorSystem actorSystem, IServiceProvider serviceProvider, IHostApplicationLifetime applicationLifetime)
         {
@@ -25,7 +30,12 @@ namespace DanceBotCore
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            messageTracker = actorSystem.ActorOf(Props.Create<InitialMessageFromBotActor>(), InitialMessageFromBotActor.ActorName);
+            var stepFactory = serviceProvider.GetService<IStepFactory>();
+
+            messageTracker = actorSystem.ActorOf(InitialMessageFromBotActor.Props(stepFactory), InitialMessageFromBotActor.ActorName);
+
+            listPrivateLessonsSlots = actorSystem.ActorOf(ListPrivateLessonsSlotsActor.Props(), nameof(ListPrivateLessonsSlotsActor));
+            viewPrivateLessonSlot = actorSystem.ActorOf(ViewPrivateLessonSlotActor.Props(), nameof(ViewPrivateLessonSlotActor));
 
             actorSystem.WhenTerminated.ContinueWith(tr => {
                 applicationLifetime.StopApplication();
